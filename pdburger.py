@@ -131,7 +131,10 @@ class PdburgerResetCommand(sublime_plugin.TextCommand):
 
 class PdburgerEventListener(sublime_plugin.EventListener):
     def on_load(self, view):
-        output_pdbrc(view)
+        view.run_command('pdburger_reset')
+
+    def on_close(self, view):
+        view.run_command('pdburger_reset')
 
     def on_post_save(self, view):
         output_pdbrc(view)
