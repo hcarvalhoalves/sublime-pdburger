@@ -22,3 +22,8 @@ To-do
 
 - Allow symbol-based breakpoints (as opposed to linenumber)
 - Allow conditional breakpoints
+
+Credits
+-------
+
+Henrique Carvalho Alves <hcarvalhoalves@gmail.com>
