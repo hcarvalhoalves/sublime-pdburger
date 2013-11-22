@@ -11,7 +11,7 @@ def _get_line(view, region):
 class Breakpoint(object):
     def __init__(self, manager, region):
         self.manager = manager
-        self.initial_region = self.manager.view.full_line(region)
+        self.initial_region = self.manager.view.line(region)
 
     def __repr__(self):
         return str(self.line)
@@ -31,7 +31,7 @@ class Breakpoint(object):
 
     def show(self):
         self.manager.view.add_regions(self.key, [self.initial_region],
-            "pdburger_breakpoint", "dot", sublime.DRAW_EMPTY | sublime.DRAW_OUTLINED | sublime.PERSISTENT)
+            "markup.list", "dot", sublime.DRAW_OUTLINED)
         return self
 
     def hide(self):
@@ -68,7 +68,8 @@ class BreakpointManager(object):
 
     def reset(self):
         for bp in self.breakpoints:
-            self.breakpoints.remove(bp.hide())
+            bp.hide()
+        self.breakpoints = []
 
 
 def get_manager(view):
