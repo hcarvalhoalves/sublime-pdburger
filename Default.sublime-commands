@@ -1,0 +1,10 @@
+[
+    {
+        "caption": "Pdburger: Toggle breakpoint",
+        "command": "pdburger_toggle"
+    },
+    {
+        "caption": "Pdburger: Reset all breakpoints",
+        "command": "pdburger_reset"
+    }
+]

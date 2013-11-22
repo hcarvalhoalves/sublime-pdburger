@@ -1,0 +1,4 @@
+[
+        { "keys": ["ctrl+b"], "command": "pdburger_toggle" },
+        { "keys": ["ctrl+shift+b"], "command": "pdburger_reset" }
+]
