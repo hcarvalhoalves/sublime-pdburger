@@ -47,11 +47,14 @@ class BreakpointManager(object):
         self.breakpoints = []
         self.view = view
 
+    def __repr__(self):
+        return repr((self.view.file_name(), self.breakpoints))
+
     def __iter__(self):
         return iter(self.breakpoints)
 
-    def __repr__(self):
-        return repr((self.view.file_name(), self.breakpoints))
+    def indexed(self):
+        return enumerate(self.breakpoints)
 
     def set(self, bp):
         self.breakpoints.append(bp.show())
@@ -89,15 +92,24 @@ def output_pdbrc(view):
         commands = '\n'.join([bp.format_command() for bp in bps])
         fd.write((commands + '\n').encode('utf-8'))
     if len(bps):
-        message = "Saved %d breakpoints to %s" % (len(bps), PDBRC_FILE)
+        message = "Added %d breakpoints to %s" % (len(bps), PDBRC_FILE)
     else:
-        message = "No breakpoints on %s" % PDBRC_FILE
+        message = "No breakpoints"
     view.set_status('pdburger', message)
 
 
-class PdburgerListCommand(sublime_plugin.TextCommand):
+class PdburgerGotoCommand(sublime_plugin.TextCommand):
+    def items(self):
+        return ["Breakpoint %s: %s" % (index + 1, bp)
+            for index, bp in get_manager(self.view).indexed()]
+
+    def on_done(self, index):
+        bp = dict(get_manager(self.view).indexed())[index]
+        self.view.window().run_command("goto_line", {
+            "line": bp.line})
+
     def run(self, edit):
-        print get_manager(self.view)
+        self.view.window().show_quick_panel(self.items(), self.on_done)
 
 
 class PdburgerToggleCommand(sublime_plugin.TextCommand):
@@ -118,5 +130,8 @@ class PdburgerResetCommand(sublime_plugin.TextCommand):
 
 
 class PdburgerEventListener(sublime_plugin.EventListener):
+    def on_load(self, view):
+        output_pdbrc(view)
+
     def on_post_save(self, view):
         output_pdbrc(view)

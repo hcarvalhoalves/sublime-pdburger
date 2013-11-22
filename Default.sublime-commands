@@ -4,6 +4,10 @@
         "command": "pdburger_toggle"
     },
     {
+        "caption": "Pdburger: Goto breakpoint",
+        "command": "pdburger_goto"
+    },
+    {
         "caption": "Pdburger: Reset all breakpoints",
         "command": "pdburger_reset"
     }
